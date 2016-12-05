@@ -2,8 +2,131 @@
 <html>
 <head>
 	<title></title>
+	<style type="text/css">
+		.a{
+			display: flex;
+			background: green;
+			width: 36px;
+			margin: 2px;
+		}
+		.row{
+			display: flex;
+			flex-basis: 100%;
+		}
+		.container{
+			display: flex;
+			flex-wrap: wrap;
+			background: black;
+			justify-content: center;
+			width: 120px;
+			height: 120px;
+			float: left;
+			margin: 20px;
+		}
+		.container_bottom{
+			display: flex;
+			flex-wrap: wrap;
+			background: black;
+			justify-content: center;
+			width: 120px;
+			height: 120px;
+			float: left;
+			margin: 20px;
+			margin-left: 180px;
+		}
+		.container_top{
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			background: black;
+ 
+			width: 120px;
+			height: 120px;
+			margin: 20px;
+			margin-left: 180px;
+		}
+	</style>
 </head>
 <body>
+<div class="container_top">
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<!-- <div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	<div class="a">1</div><div class="a">1</div><div class="a">1</div> -->
+</div>
+<div class="container">
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<!-- <div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	<div class="a">1</div><div class="a">1</div><div class="a">1</div> -->
+</div>
+<div class="container">
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<!-- <div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	<div class="a">1</div><div class="a">1</div><div class="a">1</div> -->
+</div>
+<div class="container">
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<!-- <div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	<div class="a">1</div><div class="a">1</div><div class="a">1</div> -->
+</div>
+<div style="clear: both;"></div>
+<div class="container_bottom">
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<!-- <div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	<div class="a">1</div><div class="a">1</div><div class="a">1</div> -->
+</div>
+<div class="container_bottom">
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<!-- <div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	<div class="a">1</div><div class="a">1</div><div class="a">1</div> -->
+</div>
 
 <script type="text/javascript">
 var arr =[];
@@ -122,7 +245,7 @@ function _turnSurface(arr,type){
 	if(type) return arr.slice(0,8);
 	else return arr.slice(4);
 }
-_show();
+//_show();
 </script>
 </body>
 </html>
