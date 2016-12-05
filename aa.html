@@ -1,3 +1,257 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.a{
+			display: flex;
+			background: green;
+			width: 36px;
+			margin: 2px;
+		}
+		.row{
+			display: flex;
+			flex-basis: 100%;
+		}
+		.container{
+			display: flex;
+			flex-wrap: wrap;
+			background: black;
+			justify-content: center;
+			width: 120px;
+			height: 120px;
+			float: left;
+			margin: 20px;
+		}
+		.container_bottom{
+			display: flex;
+			flex-wrap: wrap;
+			background: black;
+			justify-content: center;
+			width: 120px;
+			height: 120px;
+			float: left;
+			margin: 20px;
+			margin-left: 180px;
+		}
+		.container_top{
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			background: black;
+ 
+			width: 120px;
+			height: 120px;
+			margin: 20px;
+			margin-left: 180px;
+		}
+	</style>
+</head>
+<body>
+<div class="container_top">
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<!-- <div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	<div class="a">1</div><div class="a">1</div><div class="a">1</div> -->
+</div>
+<div class="container">
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<!-- <div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	<div class="a">1</div><div class="a">1</div><div class="a">1</div> -->
+</div>
+<div class="container">
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<!-- <div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	<div class="a">1</div><div class="a">1</div><div class="a">1</div> -->
+</div>
+<div class="container">
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<!-- <div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	<div class="a">1</div><div class="a">1</div><div class="a">1</div> -->
+</div>
+<div style="clear: both;"></div>
+<div class="container_bottom">
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<!-- <div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	<div class="a">1</div><div class="a">1</div><div class="a">1</div> -->
+</div>
+<div class="container_bottom">
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<div class="row">
+		<div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	</div>
+	<!-- <div class="a">1</div><div class="a">1</div><div class="a">1</div>
+	<div class="a">1</div><div class="a">1</div><div class="a">1</div> -->
+</div>
+
+<script type="text/javascript">
+var arr =[];
+var foo = [];
+for (var i = 1; i <= 6*9; i++) {
+	foo.push(i);
+	if (i % 3 == 0) {
+		var a = Math.ceil(i/9);
+    	arr[a] = arr[a] || [];
+    	arr[a].push(foo);
+      	foo = [];
+    }
+}
+function _show(){
+
+	for (var i = 1; i <= 6; i++) {           
+		for (var j = 0; j < 3; j++) { 
+			arr[i][j].forEach(function(v){
+				var color = getColor(v);
+				var output = '<span style="color:'+color+';">'+v+','+'</span>';
+				document.write(output);
+			})
+			document.write('&nbsp;&nbsp;&nbsp;');
+		}
+		document.write('</br>');   
+	}
+}
+function getColor(index){
+	if(index <= 9) return'red';
+	if(index > 9 && index <= 18) return'blue';
+	if(index > 18 && index <= 27) return'red';
+	if(index > 27 && index <= 36) return'blue';
+	if(index > 36 && index <= 45) return'#000';
+	if(index > 45 && index <= 54) return'#000';
+}
+
+//垂直转
+function verticalTurn(type){
+	var foo = array = [];
+	if(type > 0 && type <= 3){
+		var typeNum = type - 1;
+		array = [5,1,6,3];
+	}else{
+		var typeNum = type - 4;
+		array = [6,3,5,1];
+	}
+	array.forEach(function(v){
+		for (var i = 0; i < 3; i++) {
+			foo.push(arr[v][i][typeNum]);
+		}
+	})
+	var num = 0;
+	[1,6,3,5].forEach(function(v){
+		for (var i = 0; i < 3; i++) {
+			arr[v][i][typeNum] = foo[num];
+			num++;
+		}
+	})
+	//转侧面
+	if(type == 1){turnSurface(4,1);}
+	if(type == 3){turnSurface(2,0);}
+	if(type == 4){turnSurface(4,0);}
+	if(type == 6){turnSurface(2,1);}
+	_show();
+}
+//水平转
+function horizontalTurn(type){
+	var foo = [];
+	var n = 0;
+	if(type>0 && type<=3){
+		n = type-1;
+		foo.push(arr[4][n]);
+		foo.push(arr[1][n]);
+		foo.push(arr[2][n]);
+		foo.push(arr[3][n]);
+	}
+	if(type >3 && type<=6){
+		n = type-4;
+		foo.push(arr[2][n]);
+		foo.push(arr[3][n]);
+		foo.push(arr[4][n]);
+		foo.push(arr[1][n]);	
+	}		
+	arr[1][n] = foo[0];
+	arr[2][n] = foo[1];
+	arr[3][n] = foo[2];
+	arr[4][n] = foo[3];
+
+	//转顶或底面
+	if(type == 1){turnSurface(5,0);}
+	if(type == 3){turnSurface(6,1);}
+	if(type == 4){turnSurface(5,1);}
+	if(type == 6){turnSurface(6,0);}
+ 	//console.log(foo);
+	/*arr[5][]*/
+	_show();
+}
+//n为面编号 底部  rotationSense为1 顺时针
+function turnSurface(n,rotationSense){
+	var array = [arr[n][0][0],arr[n][0][1],arr[n][0][2],arr[n][1][2],arr[n][2][2],arr[n][2][1],arr[n][2][0],arr[n][1][0]];
+	var foo = _turnSurface(array,rotationSense);
+	
+	arr[n][0][0] = foo[0];
+	arr[n][0][1] = foo[1];
+	arr[n][0][2] = foo[2];
+	arr[n][1][2] = foo[3];
+	arr[n][2][2] = foo[4];
+	arr[n][2][1] = foo[5];
+	arr[n][2][0] = foo[6];
+	arr[n][1][0] = foo[7];
+}
+//type为1顺时针
+function _turnSurface(arr,type){
+	arr.push(arr[0],arr[1]);
+	arr.unshift(arr[6],arr[7]);
+	if(type) return arr.slice(0,8);
+	else return arr.slice(4);
+}
+//_show();
+</script>
+</body>
+</html>
+
+=======
 <!DOCTYPE html>
 <html>
 <head>
@@ -151,7 +405,7 @@ function _show(){
 			})
 			document.write('&nbsp;&nbsp;&nbsp;');
 		}
-		document.write('</br>');   
+		document.write('</br>');  
 	}
 }
 function getColor(index){
@@ -250,3 +504,4 @@ function _turnSurface(arr,type){
 </body>
 </html>
 
+>>>>>>> d944c7ce386c6b396144ce48e58fba52a5671daf
