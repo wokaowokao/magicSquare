@@ -144,26 +144,31 @@
 <button type="button" onclick="horizontalTurn(5)">水平2层左转(5)</button>
 <button type="button" onclick="horizontalTurn(6)">水平3层左转(6)</button>
 </br>
-<button type="button" onclick="verticalTurn(1)">垂直1层下转(7)</button>
-<button type="button" onclick="verticalTurn(2)">垂直2层下转(8)</button>
-<button type="button" onclick="verticalTurn(3)">垂直3层下转(9)</button>
-<button type="button" onclick="verticalTurn(4)">垂直1层上转(10)</button>
-<button type="button" onclick="verticalTurn(5)">垂直2层上转(11)</button>
-<button type="button" onclick="verticalTurn(6)">垂直3层上转(12)</button>
+<button type="button" onclick="verticalTurn(1)">垂直1层下转(21)</button>
+<button type="button" onclick="verticalTurn(2)">垂直2层下转(22)</button>
+<button type="button" onclick="verticalTurn(3)">垂直3层下转(23)</button>
+<button type="button" onclick="verticalTurn(4)">垂直1层上转(24)</button>
+<button type="button" onclick="verticalTurn(5)">垂直2层上转(25)</button>
+<button type="button" onclick="verticalTurn(6)">垂直3层上转(26)</button>
+</br>
+<button type="button" onclick="planeTurn(1)">侧1层右转(31)</button>
+<button type="button" onclick="planeTurn(2)">侧2层右转(32)</button>
+<button type="button" onclick="planeTurn(3)">侧3层右转(33)</button>
+<button type="button" onclick="planeTurn(4)">侧1层左转(34)</button>
+<button type="button" onclick="planeTurn(5)">侧2层左转(35)</button>
+<button type="button" onclick="planeTurn(6)">侧3层左转(36)</button>
 </br>
 <button type="button" onclick="upset()">打乱</button>
 <button type="button" onclick="goback()">后退</button>
-<div class="run">第一步(黄中心归位)：<span class="step"></span><button type="button" onclick="run(1)">计算</button></div>
-<div class="run">第二步(黄左白点归位)：<span class="step"></span><button type="button" onclick="run(2)">计算</button></div>
-<div class="run">第二步(黄右白点归位)：<span class="step"></span><button type="button" onclick="run(3)">计算</button></div>
-<div class="run">第二步(黄上白点归位)：<span class="step"></span><button type="button" onclick="run(4)">计算</button></div>
-<div class="run">第二步(黄下白点归位)：<span class="step"></span><button type="button" onclick="run(5)">计算</button></div>
+<div class="run">第一步(黄中心归位)：<span class="step"></span><button type="button" onclick="run(1)">执行</button></div>
+<div class="run">第二步(黄左白点归位1)：<span class="step"></span><button type="button" onclick="run(2)">执行</button></div>
+<div class="run">第三步(黄左白点归位2)：<span class="step"></span><button type="button" onclick="run(3)">执行</button></div>
 
-<div class="run">第三步(白色角点归位)：<span class="step"></span><button type="button" onclick="run(3)">计算</button></div>
 <script type="text/javascript">
 var arr =[];
 var foo = [];
 var allStep = [];
+//生成arr数组
 for (var i = 1; i <= 6*9; i++) {
 	foo.push(i);
 	if (i % 3 == 0) {
@@ -219,13 +224,25 @@ function verticalTurn(type,noAddStep){
 	}
 	array.forEach(function(v){
 		for (var i = 0; i < 3; i++) {
-			foo.push(arr[v][i][typeNum]);
+			if(v == 3) {
+				if(typeNum == 0) foo.push(arr[v][i][2]);
+				if(typeNum == 1) foo.push(arr[v][i][typeNum]);
+				if(typeNum == 2) foo.push(arr[v][i][0]);
+			}else{
+				foo.push(arr[v][i][typeNum]);
+			}
 		}
 	})
 	var num = 0;
 	[1,6,3,5].forEach(function(v){
 		for (var i = 0; i < 3; i++) {
-			arr[v][i][typeNum] = foo[num];
+			if(v == 3) {
+				if(typeNum == 0) arr[v][i][2] = foo[num];
+				if(typeNum == 1) arr[v][i][typeNum] = foo[num];
+				if(typeNum == 2) arr[v][i][0] = foo[num];
+			}else{
+				arr[v][i][typeNum] = foo[num];
+			}
 			num++;
 		}
 	})
@@ -265,12 +282,59 @@ function horizontalTurn(type,noAddStep){
 	if(type == 3){turnSurface(6,1);}
 	if(type == 4){turnSurface(5,1);}
 	if(type == 6){turnSurface(6,0);}
- 	//console.log(foo);
-	/*arr[5][]*/
 	noAddStep || allStep.push('1'+type);
 	_show();
 }
-//n为面编号 底部  rotationSense为1 顺时针
+//面转
+function planeTurn(type,noAddStep){
+	allTurn(3);
+	horizontalTurn(type,1);
+	allTurn(4);
+	noAddStep || allStep.push('3'+type);
+	_show();
+}
+//整体转 1234 1水平右 2水平左 3垂直下 4垂直上
+function allTurn(type){
+	var foo = [];
+	if(type == 1){
+		foo = arr[1];
+		arr[1] = arr[4];
+		arr[4] = arr[3];
+		arr[3] = arr[2];
+		arr[2] = foo;
+		turnSurface(5);
+		turnSurface(6,1);
+	}
+	if(type == 2){
+		foo = arr[1];
+		arr[1] = arr[2];
+		arr[2] = arr[3];
+		arr[3] = arr[4];
+		arr[4] = foo;
+		turnSurface(5,1);
+		turnSurface(6);
+	}
+	if(type == 3){
+		foo = arr[1];
+		arr[1] = arr[5];
+		arr[5] = arr[3];
+		arr[3] = arr[6];
+		arr[6] = foo;
+		turnSurface(4,1);
+		turnSurface(2);
+	}	
+	if(type == 4){
+		foo = arr[1];
+		arr[1] = arr[6];
+		arr[6] = arr[3];
+		arr[3] = arr[5];
+		arr[5] = foo;
+		turnSurface(4);
+		turnSurface(2,1);
+	}	
+	_show()
+}
+//砖面方法 n为面编号   rotationSense为1 顺时针
 function turnSurface(n,rotationSense){
 	var array = [arr[n][0][0],arr[n][0][1],arr[n][0][2],arr[n][1][2],arr[n][2][2],arr[n][2][1],arr[n][2][0],arr[n][1][0]];
 	var foo = _turnSurface(array,rotationSense);
@@ -305,50 +369,140 @@ function getFaceIndex(val){
 	})
 	return num;
 }
-function run(type){
-	if(type==1){
+//步骤执行
+function run(step){
+	if(step == 1){
 		var num = getFaceIndex(23);
 		var val = '';
 		console.log(num);
-		if(num == 1){val = '2,2';}
-		if(num == 2){val = '2,';}
-		if(num == 3){val = '';}
-		if(num == 4){val = '5,';}
-		if(num == 5){val = '8,2,2';}
-		if(num == 6){val = '11,2,2';}
-		$('.run').eq(type-1).find('.step').html(val);
+		if(num == 1){
+			horizontalTurn(2);
+			horizontalTurn(2);
+		}
+		if(num == 2){
+			horizontalTurn(2);
+		}
+		if(num == 3){
+			return false;
+		}
+		if(num == 4){
+			horizontalTurn(5);
+		}
+		if(num == 5){
+			verticalTurn(5);
+		}
+		if(num == 6){
+			verticalTurn(2);
+		}
 	}
-	if(type==2){
-		var num = getFaceIndex(23);
-		var val = '';
-		if(num == 1){val = '2,2';}
-		if(num == 2){val = '2,';}
-		if(num == 3){val = '';}
-		if(num == 4){val = '5,';}
-		if(num == 5){val = '8,2,2';}
-		if(num == 6){val = '11,2,2';}
-		$('.run').eq(type-1).find('.step').html(val);
+	step == 2 && runType2();
+	step == 3 && runType3();
+}
+//黄 周围白点
+function runType2(){
+	var foo = [0,0,0,0];
+	if(9 >= arr[3][0][1]) foo[0] = 1;
+	if(9 >= arr[3][1][2]) foo[1] = 1;
+	if(9 >= arr[3][2][1]) foo[2] = 1;
+	if(9 >= arr[3][1][0]) foo[3] = 1;
+	
+	foo.forEach(function(v,k){
+		!v && runType21(k);
+	})
+}
+function runType3(){
+	var foo = [0,0,0,0];
+	if(9 >= arr[3][0][1]) foo[0] = 1;
+	if(9 >= arr[3][1][2]) foo[1] = 1;
+	if(9 >= arr[3][2][1]) foo[2] = 1;
+	if(9 >= arr[3][1][0]) foo[3] = 1;
+	
+	!foo[0] && horizontalTurn(1) && runType2();
+	!foo[2] && horizontalTurn(3) && runType2();
+	!foo[1] && verticalTurn(1) && runType2();
+	!foo[3] && verticalTurn(3) && runType2();
+	
+}
+function runType21(k) {
+	if(k == 0){
+		if(isWhite(arr[4][0][1])){
+			horizontalTurn(4);
+		} 
+		if(isWhite(arr[1][0][1])){
+			horizontalTurn(4);
+			horizontalTurn(4);
+			
+		}
+		if(isWhite(arr[2][0][1])){
+			horizontalTurn(1);
+		}
 	}
+	if(k == 1){
+		if(isWhite(arr[5][1][0])){
+			verticalTurn(4);
+		} 
+		if(isWhite(arr[1][1][0])){
+			verticalTurn(4);
+			verticalTurn(4);
+			
+		}
+		if(isWhite(arr[6][1][0])){
+			verticalTurn(1);
+		}
+	}
+	if(k == 2){
+		if(isWhite(arr[4][2][1])){
+			horizontalTurn(6);
+		} 
+		if(isWhite(arr[1][2][1])){
+			horizontalTurn(6);
+			horizontalTurn(6);
+			
+		}
+		if(isWhite(arr[2][2][1])){
+			horizontalTurn(3);
+		}
+	}
+	if(k == 3){
+		if(isWhite(arr[5][1][2])){
+			verticalTurn(6);
+		} 
+		if(isWhite(arr[1][1][2])){
+			verticalTurn(6);
+			verticalTurn(6);
+			
+		}
+		if(isWhite(arr[6][1][2])){
+			verticalTurn(3);
+		}
+	}
+}
+function isWhite(val){
+	if(9 >= val) return 1;
+	else return 0;
 }
 //打乱
 function upset(){
 	for (var i = 0; i < 10; i++) {
-		 var val = Math.round(Math.random());
-		 var num = Math.round(Math.random()*5+1);
-		 if(val){
-		 	horizontalTurn(num);
-		 }else{
-		 	verticalTurn(num);
-		 }
+		var val = Math.round(Math.random()*2);
+		var num = Math.round(Math.random()*5+1);
+		val == 0 && horizontalTurn(num);
+		val == 1 && verticalTurn(num);
+		val == 2 && planeTurn(num);
 	}
+	console.log(allStep);
 }
 //后退
 function goback(){
 	var foo = allStep[allStep.length-1];
 	if(foo.substring(0,1) == '1'){
 		horizontalTurn(_goback(foo.substring(1,2)),1);
-	}else{
+	}
+	if(foo.substring(0,1) == '2'){
 		verticalTurn(_goback(foo.substring(1,2)),1);
+	}
+	if(foo.substring(0,1) == '3'){
+		planeTurn(_goback(foo.substring(1,2)),1);
 	}
 	allStep.pop();
 }
