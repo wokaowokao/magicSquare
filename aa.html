@@ -332,7 +332,7 @@ function allTurn(type){
 		turnSurface(4);
 		turnSurface(2,1);
 	}	
-	_show()
+	_show();
 }
 //砖面方法 n为面编号   rotationSense为1 顺时针
 function turnSurface(n,rotationSense){
@@ -347,6 +347,7 @@ function turnSurface(n,rotationSense){
 	arr[n][2][1] = foo[5];
 	arr[n][2][0] = foo[6];
 	arr[n][1][0] = foo[7];
+	_show()
 }
 //type为1顺时针
 function _turnSurface(arr,type){
@@ -395,8 +396,23 @@ function run(step){
 			verticalTurn(2);
 		}
 	}
-	step == 2 && runType2();
-	step == 3 && runType3();
+	if(step == 2) {
+		//处理可以直接 上的白块
+		runType2();
+		//处理 通过转3面 可以上的白块
+		runType21();
+		//处理其他白块
+		setTimeout("runType22()", 300 );
+		
+	}
+	//step == 3 && runType3();
+}
+function runType2Check(){
+	if(9 < arr[3][0][1]) return false;
+	if(9 < arr[3][1][2]) return false;
+	if(9 < arr[3][2][1]) return false;
+	if(9 < arr[3][1][0]) return false;
+	return true;
 }
 //黄 周围白点
 function runType2(){
@@ -405,25 +421,16 @@ function runType2(){
 	if(9 >= arr[3][1][2]) foo[1] = 1;
 	if(9 >= arr[3][2][1]) foo[2] = 1;
 	if(9 >= arr[3][1][0]) foo[3] = 1;
-	
+	 
 	foo.forEach(function(v,k){
-		!v && runType21(k);
+		!v && _runType2(k);
 	})
 }
 function runType3(){
-	var foo = [0,0,0,0];
-	if(9 >= arr[3][0][1]) foo[0] = 1;
-	if(9 >= arr[3][1][2]) foo[1] = 1;
-	if(9 >= arr[3][2][1]) foo[2] = 1;
-	if(9 >= arr[3][1][0]) foo[3] = 1;
-	
-	!foo[0] && horizontalTurn(1) && runType2();
-	!foo[2] && horizontalTurn(3) && runType2();
-	!foo[1] && verticalTurn(1) && runType2();
-	!foo[3] && verticalTurn(3) && runType2();
+ 
 	
 }
-function runType21(k) {
+function _runType2(k) {
 	if(k == 0){
 		if(isWhite(arr[4][0][1])){
 			horizontalTurn(4);
@@ -477,13 +484,86 @@ function runType21(k) {
 		}
 	}
 }
+function runType21() {
+	var array = [];
+	arr.forEach(function(v,k){
+		if(k == 3) return;
+		v.forEach(function(v2,k2){
+			v2.forEach(function(v3,k3){
+				//屏蔽角点 和非白点
+				if(v3 > 9) return;
+				if(k2 == 0 && k3 == 0) return;
+				if(k2 == 0 && k3 == 2) return;
+				if(k2 == 2 && k3 == 0) return;
+				if(k2 == 2 && k3 == 2) return;
+				if(k2 == 1 && k3 == 1) return;
+				if(hasLocation([k,k2,k3])){
+					array.push([k,k2,k3]);
+				}
+			})
+		})
+	})
+	array.length && _runType21(array);
+}
+//array为 没到位的白块
+function _runType21(array){
+	array.forEach(function(){
+		for (var i = 0; i < 3; i++) {
+		/*var a = runType2Check();
+		if(a) break;*/
+			turnSurface(3);
+			runType2();
+		}
+	})
+}
+//处理其他白块
+function runType22(){
+	var array = [];
+	arr.forEach(function(v,k){
+		if(k == 3) return;
+		v.forEach(function(v2,k2){
+			v2.forEach(function(v3,k3){
+				//屏蔽角点 和非白点
+				if(v3 > 9) return;
+				if(k2 == 0 && k3 == 0) return;
+				if(k2 == 0 && k3 == 2) return;
+				if(k2 == 2 && k3 == 0) return;
+				if(k2 == 2 && k3 == 2) return;
+				if(k2 == 1 && k3 == 1) return;
+				array.push([k,k2,k3]);
+			})
+		})
+	})
+	_runType22(array);
+	runType2();
+	runType21();
+}
+function _runType22(array){
+	var foo = [];
+	array.forEach(function(v,k){
+		if($.inArray(v[0], foo) != -1) return;
+		foo.push(v[0]);
+		turnSurface(v[0]);
+	})
+}
+//检查 这个点 是否被占 return 1 已经被占
+function hasLocation(array){
+	if (array[0] == 5 || array[0] == 6) {
+		if(array[1] == 1){
+			if(array[2] == 0) array[2] = 2;
+			else array[2] = 0;
+		}
+	}
+	if(arr[3][array[1]][array[2]] < 9) return 1;
+	else return 0;
+}
 function isWhite(val){
 	if(9 >= val) return 1;
 	else return 0;
 }
 //打乱
 function upset(){
-	for (var i = 0; i < 10; i++) {
+	for (var i = 0; i < 50; i++) {
 		var val = Math.round(Math.random()*2);
 		var num = Math.round(Math.random()*5+1);
 		val == 0 && horizontalTurn(num);
@@ -514,6 +594,14 @@ function _goback(val){
 	if(val == '5') return '2';
 	if(val == '6') return '3';
 }
+
+;!function(a){
+	function ab(){
+		alert('ab');
+	}
+	ab();
+}(window)
+ab();
 $(function(){
 	_show();
 })
