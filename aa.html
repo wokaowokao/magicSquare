@@ -137,12 +137,12 @@
 	</div>
 </div>
 <div style="clear: both;"></div>
-<button type="button" onclick="horizontalTurn(1)">水平1层右转(1)</button>
-<button type="button" onclick="horizontalTurn(2)">水平2层右转(2)</button>
-<button type="button" onclick="horizontalTurn(3)">水平3层右转(3)</button>
-<button type="button" onclick="horizontalTurn(4)">水平1层左转(4)</button>
-<button type="button" onclick="horizontalTurn(5)">水平2层左转(5)</button>
-<button type="button" onclick="horizontalTurn(6)">水平3层左转(6)</button>
+<button type="button" onclick="horizontalTurn(1)">水平1层右转(11)</button>
+<button type="button" onclick="horizontalTurn(2)">水平2层右转(12)</button>
+<button type="button" onclick="horizontalTurn(3)">水平3层右转(13)</button>
+<button type="button" onclick="horizontalTurn(4)">水平1层左转(14)</button>
+<button type="button" onclick="horizontalTurn(5)">水平2层左转(15)</button>
+<button type="button" onclick="horizontalTurn(6)">水平3层左转(16)</button>
 </br>
 <button type="button" onclick="verticalTurn(1)">垂直1层下转(21)</button>
 <button type="button" onclick="verticalTurn(2)">垂直2层下转(22)</button>
@@ -161,8 +161,8 @@
 <button type="button" onclick="upset()">打乱</button>
 <button type="button" onclick="goback()">后退</button>
 <div class="run">第一步(黄中心归位)：<span class="step"></span><button type="button" onclick="run(1)">执行</button></div>
-<div class="run">第二步(黄左白点归位1)：<span class="step"></span><button type="button" onclick="run(2)">执行</button></div>
-<div class="run">第三步(黄左白点归位2)：<span class="step"></span><button type="button" onclick="run(3)">执行</button></div>
+<div class="run">第二步(黄周围白4点归位)：<span class="step"></span><button type="button" onclick="run(2)">执行</button></div>
+<div class="run">第三步(白十字归位)：<span class="step"></span><button type="button" onclick="run(3)">执行</button></div>
 
 <script type="text/javascript">
 var arr =[];
@@ -320,6 +320,10 @@ function allTurn(type){
 		arr[5] = arr[3];
 		arr[3] = arr[6];
 		arr[6] = foo;
+		turnSurface(3,1);
+		turnSurface(3,1);
+		turnSurface(5,1);
+		turnSurface(5,1);
 		turnSurface(4,1);
 		turnSurface(2);
 	}	
@@ -329,12 +333,16 @@ function allTurn(type){
 		arr[6] = arr[3];
 		arr[3] = arr[5];
 		arr[5] = foo;
+		turnSurface(3,1);
+		turnSurface(3,1);
+		turnSurface(6,1);
+		turnSurface(6,1);
 		turnSurface(4);
 		turnSurface(2,1);
 	}	
 	_show();
 }
-//砖面方法 n为面编号   rotationSense为1 顺时针
+//砖面方法 n为面编号   rotationSense为1 顺时针 只转一个面
 function turnSurface(n,rotationSense){
 	var array = [arr[n][0][0],arr[n][0][1],arr[n][0][2],arr[n][1][2],arr[n][2][2],arr[n][2][1],arr[n][2][0],arr[n][1][0]];
 	var foo = _turnSurface(array,rotationSense);
@@ -375,7 +383,7 @@ function run(step){
 	if(step == 1){
 		var num = getFaceIndex(23);
 		var val = '';
-		console.log(num);
+		//console.log(num);
 		if(num == 1){
 			horizontalTurn(2);
 			horizontalTurn(2);
@@ -402,7 +410,10 @@ function run(step){
 		//处理 通过转3面 可以上的白块
 		runType21();
 		//处理其他白块
-		setTimeout("runType22()", 300 );
+		setTimeout(runType22, 300 );
+		//setTimeout("allTurn(1)", 1000 );
+		//setTimeout("allTurn(1)", 1000 );
+
 		
 	}
 	//step == 3 && runType3();
@@ -425,10 +436,6 @@ function runType2(){
 	foo.forEach(function(v,k){
 		!v && _runType2(k);
 	})
-}
-function runType3(){
- 
-	
 }
 function _runType2(k) {
 	if(k == 0){
@@ -561,9 +568,19 @@ function isWhite(val){
 	if(9 >= val) return 1;
 	else return 0;
 }
+//执行
+function excute(array){
+	for (var i = 0; i < 20; i++) {
+		var val = array[i].substring(0,1);
+		var num = array[i].substring(1,2);
+		val == 1 && horizontalTurn(num);
+		val == 2 && verticalTurn(num);
+		val == 3 && planeTurn(num);
+	}
+}
 //打乱
 function upset(){
-	for (var i = 0; i < 50; i++) {
+	for (var i = 0; i < 20; i++) {
 		var val = Math.round(Math.random()*2);
 		var num = Math.round(Math.random()*5+1);
 		val == 0 && horizontalTurn(num);
@@ -596,12 +613,72 @@ function _goback(val){
 }
 
 ;!function(a){
-	function ab(){
-		alert('ab');
+	"use strict";
+	var b = [0,0,0,0];
+	a.stepType3 = {
+		a : function(){
+			var foo = b;
+			var _this = this.stepType3;
+			foo.forEach(function(v,k){
+				if(v == 1) return;
+				k == 0 && _this.b(arr[5][1][1],arr[5][2][1]) && _this.d(k);
+				k == 1 && _this.b(arr[2][1][0],arr[2][1][1]) && _this.d(k);
+				k == 2 && _this.b(arr[6][0][1],arr[5][1][1]) && _this.d(k);
+				k == 3 && _this.b(arr[5][1][1],arr[5][2][1]) && _this.d(k);
+			})
+			return b;
+		},//检查并转 并改数组
+		b : function(a,b){
+			return Math.floor(a/9) == Math.floor(b/9) ? 1 : 0;
+		},
+		c : function(){
+			planeTurn(3);
+		},
+		d : function(a){
+			if(a == 0){
+				horizontalTurn(1);
+				horizontalTurn(1);
+			}
+			if(a == 1){
+				verticalTurn(3);
+				verticalTurn(3);
+			}
+			if(a == 2){
+				horizontalTurn(3);
+				horizontalTurn(3);
+			}
+			if(a == 3){
+				verticalTurn(1);
+				verticalTurn(1);
+			}
+			b[a] = 1;
+		},
+		e : function(){
+			var a = 1;
+			for (var i = 0; i <= 3; i++) {
+				if(b[i] == 0) {
+					a = 0;
+					return a;
+				}
+			}
+			return a;
+		}
+	};
+}(window);
+
+!function(a){
+	a.a = {
+		a:[0,1],
+		b:function(){
+			console.log(this);
+			var b = this.a;
+			b.forEach(function(){
+				console.log(this);
+			})
+		}
 	}
-	ab();
 }(window)
-ab();
+a.b();
 $(function(){
 	_show();
 })
