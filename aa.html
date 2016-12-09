@@ -192,7 +192,6 @@ function _show(){
 //v 123456  index 123456789
 function display(v,index,num,color){
 	index = index -1;
-	//console.log(v+'_'+index+'_'+num);
 	var node = $('.c_'+v).find('.a').eq(index);
 	node.html(num);
 	node.removeClass('white');
@@ -211,10 +210,40 @@ function getColor(index){
 	if(index > 36 && index <= 45) return'green';
 	if(index > 45 && index <= 54) return'blue';
 }
+//水平转
+function horizontalTurn(type,noAddStep){
+	var foo = [];
+	var n = 0;
+	if(type>0 && type<=3){
+		n = type-1;
+		foo.push(arr[4][n]);
+		foo.push(arr[1][n]);
+		foo.push(arr[2][n]);
+		foo.push(arr[3][n]);
+	}
+	if(type >3 && type<=6){
+		n = type-4;
+		foo.push(arr[2][n]);
+		foo.push(arr[3][n]);
+		foo.push(arr[4][n]);
+		foo.push(arr[1][n]);	
+	}		
+	arr[1][n] = foo[0];
+	arr[2][n] = foo[1];
+	arr[3][n] = foo[2];
+	arr[4][n] = foo[3];
 
+	//转顶或底面
+	if(type == 1){turnSurface(5,0);}
+	if(type == 3){turnSurface(6,1);}
+	if(type == 4){turnSurface(5,1);}
+	if(type == 6){turnSurface(6,0);}
+	noAddStep || allStep.push('1'+type);
+	_show();
+}
 //垂直转
 function verticalTurn(type,noAddStep){
-	var foo = array = [];
+/*	var foo = array = [];
 	if(type > 0 && type <= 3){
 		var typeNum = type - 1;
 		array = [5,1,6,3];
@@ -250,46 +279,40 @@ function verticalTurn(type,noAddStep){
 	if(type == 1){turnSurface(4,1);}
 	if(type == 3){turnSurface(2,0);}
 	if(type == 4){turnSurface(4,0);}
-	if(type == 6){turnSurface(2,1);}
-	noAddStep || allStep.push('2'+type);
-	_show();
-}
-//水平转
-function horizontalTurn(type,noAddStep){
-	var foo = [];
-	var n = 0;
-	if(type>0 && type<=3){
-		n = type-1;
-		foo.push(arr[4][n]);
-		foo.push(arr[1][n]);
-		foo.push(arr[2][n]);
-		foo.push(arr[3][n]);
+	if(type == 6){turnSurface(2,1);}*/
+	allTurn(1);
+	if (type == 1) {
+		var t = 4;
 	}
-	if(type >3 && type<=6){
-		n = type-4;
-		foo.push(arr[2][n]);
-		foo.push(arr[3][n]);
-		foo.push(arr[4][n]);
-		foo.push(arr[1][n]);	
-	}		
-	arr[1][n] = foo[0];
-	arr[2][n] = foo[1];
-	arr[3][n] = foo[2];
-	arr[4][n] = foo[3];
-
-	//转顶或底面
-	if(type == 1){turnSurface(5,0);}
-	if(type == 3){turnSurface(6,1);}
-	if(type == 4){turnSurface(5,1);}
-	if(type == 6){turnSurface(6,0);}
-	noAddStep || allStep.push('1'+type);
+	if (type == 2) {
+		var t = 5;
+	}
+	if (type == 3) {
+		var t = 6;
+	}
+	if (type == 4) {
+		var t = 1;
+	}
+	if (type == 5) {
+		var t = 2;
+	}
+	if (type == 6) {
+		var t = 3;
+	}
+	horizontalTurn(t, 1);
+	allTurn(1);
+	allTurn(1);
+	allTurn(1);
+	noAddStep || allStep.push('2' + type);
 	_show();
 }
 //面转
 function planeTurn(type,noAddStep){
 	allTurn(3);
 	horizontalTurn(type,1);
-	allTurn(4);
+	allTurn(3);
+	allTurn(3);
+	allTurn(3);
 	noAddStep || allStep.push('3'+type);
 	_show();
 }
@@ -297,15 +320,19 @@ function planeTurn(type,noAddStep){
 function allTurn(type){
 	var foo = [];
 	if(type == 1){
-		foo = arr[1];
-		arr[1] = arr[4];
-		arr[4] = arr[3];
-		arr[3] = arr[2];
-		arr[2] = foo;
-		turnSurface(5);
+		foo = arr[2];
+		arr[2] = arr[5];
+		arr[5] = arr[4];
+		arr[4] = arr[6];
+		arr[6] = foo;
+		turnSurface(1,1);
+		turnSurface(2,1);
+		turnSurface(3);
+		turnSurface(4,1);
+		turnSurface(5,1);
 		turnSurface(6,1);
 	}
-	if(type == 2){
+/*	if(type == 2){
 		foo = arr[1];
 		arr[1] = arr[2];
 		arr[2] = arr[3];
@@ -313,7 +340,7 @@ function allTurn(type){
 		arr[4] = foo;
 		turnSurface(5,1);
 		turnSurface(6);
-	}
+	}*/
 	if(type == 3){
 		foo = arr[1];
 		arr[1] = arr[5];
@@ -327,7 +354,7 @@ function allTurn(type){
 		turnSurface(4,1);
 		turnSurface(2);
 	}	
-	if(type == 4){
+/*	if(type == 4){
 		foo = arr[1];
 		arr[1] = arr[6];
 		arr[6] = arr[3];
@@ -339,7 +366,7 @@ function allTurn(type){
 		turnSurface(6,1);
 		turnSurface(4);
 		turnSurface(2,1);
-	}	
+	}	*/
 	_show();
 }
 //砖面方法 n为面编号   rotationSense为1 顺时针 只转一个面
@@ -383,7 +410,6 @@ function run(step){
 	if(step == 1){
 		var num = getFaceIndex(23);
 		var val = '';
-		//console.log(num);
 		if(num == 1){
 			horizontalTurn(2);
 			horizontalTurn(2);
@@ -405,164 +431,12 @@ function run(step){
 		}
 	}
 	if(step == 2) {
-		//处理可以直接 上的白块
-		runType2();
-		//处理 通过转3面 可以上的白块
-		runType21();
-		//处理其他白块
-		setTimeout(runType22, 300 );
-		//setTimeout("allTurn(1)", 1000 );
-		//setTimeout("allTurn(1)", 1000 );
-
-		
+		step2.run();
+	}
+	if(step == 3) {
+		step3.run();
 	}
 	//step == 3 && runType3();
-}
-function runType2Check(){
-	if(9 < arr[3][0][1]) return false;
-	if(9 < arr[3][1][2]) return false;
-	if(9 < arr[3][2][1]) return false;
-	if(9 < arr[3][1][0]) return false;
-	return true;
-}
-//黄 周围白点
-function runType2(){
-	var foo = [0,0,0,0];
-	if(9 >= arr[3][0][1]) foo[0] = 1;
-	if(9 >= arr[3][1][2]) foo[1] = 1;
-	if(9 >= arr[3][2][1]) foo[2] = 1;
-	if(9 >= arr[3][1][0]) foo[3] = 1;
-	 
-	foo.forEach(function(v,k){
-		!v && _runType2(k);
-	})
-}
-function _runType2(k) {
-	if(k == 0){
-		if(isWhite(arr[4][0][1])){
-			horizontalTurn(4);
-		} 
-		if(isWhite(arr[1][0][1])){
-			horizontalTurn(4);
-			horizontalTurn(4);
-			
-		}
-		if(isWhite(arr[2][0][1])){
-			horizontalTurn(1);
-		}
-	}
-	if(k == 1){
-		if(isWhite(arr[5][1][0])){
-			verticalTurn(4);
-		} 
-		if(isWhite(arr[1][1][0])){
-			verticalTurn(4);
-			verticalTurn(4);
-			
-		}
-		if(isWhite(arr[6][1][0])){
-			verticalTurn(1);
-		}
-	}
-	if(k == 2){
-		if(isWhite(arr[4][2][1])){
-			horizontalTurn(6);
-		} 
-		if(isWhite(arr[1][2][1])){
-			horizontalTurn(6);
-			horizontalTurn(6);
-			
-		}
-		if(isWhite(arr[2][2][1])){
-			horizontalTurn(3);
-		}
-	}
-	if(k == 3){
-		if(isWhite(arr[5][1][2])){
-			verticalTurn(6);
-		} 
-		if(isWhite(arr[1][1][2])){
-			verticalTurn(6);
-			verticalTurn(6);
-			
-		}
-		if(isWhite(arr[6][1][2])){
-			verticalTurn(3);
-		}
-	}
-}
-function runType21() {
-	var array = [];
-	arr.forEach(function(v,k){
-		if(k == 3) return;
-		v.forEach(function(v2,k2){
-			v2.forEach(function(v3,k3){
-				//屏蔽角点 和非白点
-				if(v3 > 9) return;
-				if(k2 == 0 && k3 == 0) return;
-				if(k2 == 0 && k3 == 2) return;
-				if(k2 == 2 && k3 == 0) return;
-				if(k2 == 2 && k3 == 2) return;
-				if(k2 == 1 && k3 == 1) return;
-				if(hasLocation([k,k2,k3])){
-					array.push([k,k2,k3]);
-				}
-			})
-		})
-	})
-	array.length && _runType21(array);
-}
-//array为 没到位的白块
-function _runType21(array){
-	array.forEach(function(){
-		for (var i = 0; i < 3; i++) {
-		/*var a = runType2Check();
-		if(a) break;*/
-			turnSurface(3);
-			runType2();
-		}
-	})
-}
-//处理其他白块
-function runType22(){
-	var array = [];
-	arr.forEach(function(v,k){
-		if(k == 3) return;
-		v.forEach(function(v2,k2){
-			v2.forEach(function(v3,k3){
-				//屏蔽角点 和非白点
-				if(v3 > 9) return;
-				if(k2 == 0 && k3 == 0) return;
-				if(k2 == 0 && k3 == 2) return;
-				if(k2 == 2 && k3 == 0) return;
-				if(k2 == 2 && k3 == 2) return;
-				if(k2 == 1 && k3 == 1) return;
-				array.push([k,k2,k3]);
-			})
-		})
-	})
-	_runType22(array);
-	runType2();
-	runType21();
-}
-function _runType22(array){
-	var foo = [];
-	array.forEach(function(v,k){
-		if($.inArray(v[0], foo) != -1) return;
-		foo.push(v[0]);
-		turnSurface(v[0]);
-	})
-}
-//检查 这个点 是否被占 return 1 已经被占
-function hasLocation(array){
-	if (array[0] == 5 || array[0] == 6) {
-		if(array[1] == 1){
-			if(array[2] == 0) array[2] = 2;
-			else array[2] = 0;
-		}
-	}
-	if(arr[3][array[1]][array[2]] < 9) return 1;
-	else return 0;
 }
 function isWhite(val){
 	if(9 >= val) return 1;
@@ -581,11 +455,15 @@ function excute(array){
 //打乱
 function upset(){
 	for (var i = 0; i < 20; i++) {
-		var val = Math.round(Math.random()*2);
+		var val = Math.round(Math.random()*2)+1;
 		var num = Math.round(Math.random()*5+1);
-		val == 0 && horizontalTurn(num);
-		val == 1 && verticalTurn(num);
-		val == 2 && planeTurn(num);
+		val == 1 && horizontalTurn(num);
+		val == 2 && verticalTurn(num);
+		val == 3 && planeTurn(num);
+		if(!check.run()) {
+			console.log('step error'+val+num);
+			break;
+		}
 	}
 	console.log(allStep);
 }
@@ -611,74 +489,513 @@ function _goback(val){
 	if(val == '5') return '2';
 	if(val == '6') return '3';
 }
-
+;
+! function(a) {
+	"use strict";
+	var point = [];
+	a.step2 = {
+		check: function(v) {
+			//v代表第二步 的点
+			for (var a in arr) {
+				if (a == 3) continue;
+				for (var b in arr[a]) {
+					for (var c in arr[a][b]) {
+						//屏蔽角点 和非白点
+						if (arr[a][b][c] > 9) continue;
+						if(v){
+							if((a == 1 || a == 2 || a == 4 ) &&  b !=1) continue;
+							if((a == 5 || a == 6) && b ==1) continue;
+						}else{
+							if((a == 1 || a == 2 || a == 4 ) &&  b ==1) continue;
+							if((a == 5 || a == 6) && b !=1) continue;
+						}
+						if (b == 0 && c == 0) continue;
+						if (b == 0 && c == 2) continue;
+						if (b == 2 && c == 0) continue;
+						if (b == 2 && c == 2) continue;
+						if (b == 1 && c == 1) continue;
+						point = [a, b, c]; return 1;
+					}
+				}
+			}
+			return 0;
+		},
+		b : function(){
+			if(this.f()) this.d();
+			else this.c();
+		},//直接上
+		c: function() {
+			//point 为可直接上的位置 return 0说明有问题
+			if(point[1] == 0){
+				if(point[0] == 1){
+					horizontalTurn(1);
+					horizontalTurn(1);
+					return 1;
+				}
+				if(point[0] == 2){
+					horizontalTurn(1);
+					return 1;
+				}
+				if(point[0] == 4){
+					horizontalTurn(4);
+					return 1;
+				}
+			}
+			if(point[1] == 1){
+				if(point[0] == 5){
+					if(point[2] == 0){
+						verticalTurn(4);
+						return 1;
+					}
+					if(point[2] == 2){
+						verticalTurn(6);
+						return 1;
+					}
+				}
+				if(point[0] == 6){
+					if(point[2] == 0){
+						verticalTurn(1);
+						return 1;
+					}
+					if(point[2] == 2){
+						verticalTurn(3);
+						return 1;
+					}
+				}
+			}
+			if(point[1] == 2){
+				if(point[0] == 1){
+					horizontalTurn(3);
+					horizontalTurn(3);
+					return 1;
+				}
+				if(point[0] == 2){
+					horizontalTurn(3);
+					return 1;
+				}
+				if(point[0] == 4){
+					horizontalTurn(6);
+					return 1;
+				}
+			}
+			console.log('c_false'+point);
+		},
+		d: function() {
+			//转 白面 被占 就继续转
+			planeTurn(1);
+			if(this.f()){
+				this.d();
+			}else{
+				this.c();
+				return;
+			}
+		},
+		f: function() {
+			//检查是否 位置被占
+			var array = point.concat();
+			if (array[0] == 5 || array[0] == 6) {
+				if (array[1] == 1) {
+					if (array[2] == 0) array[2] = 2;
+					else array[2] = 0;
+				}
+			}
+			if (arr[3][array[1]][array[2]] < 9) return 1;
+			else return 0;
+		},
+		g : function(){
+			//递归 正确位置的白点 归位
+			if(this.check()) {
+				this.b();
+				this.g();
+			}else{
+				return;
+			}
+		},
+		h : function(k){
+			//转之前 判断是否 会影响以归位的白块
+			if(this.l(point[0])){
+				//如果影响 先转白面
+				planeTurn(1);
+				this.h('1');
+			} 
+			if(k) return;
+			//point所在的面转 point修改
+			if(point[0] == 1) {
+				planeTurn(3);
+				this.k();
+				return;
+			}
+			if(point[0] == 2) {
+				verticalTurn(6);
+				this.k();
+				return;
+			}
+			if(point[0] == 4) {
+				verticalTurn(1);
+				this.k();
+				return;
+			}
+			if(point[0] == 5) {
+				horizontalTurn(4);
+				this.k();
+				return;
+			}
+			if(point[0] == 6) {
+				horizontalTurn(3);
+				this.k();
+				return;
+			}
+			console.log('h_false'+point[0]);
+		},
+		i : function(){
+			if(this.check(1)){
+				//转面
+				this.h();
+				//转上此点
+				this.b();
+				this.g();
+				this.i();
+			}else{
+				return;
+			}
+		},
+		k : function(){
+			//得到顺时针 转面 之后的点
+			console.log(point);
+			if(point[1] == 0 && point[2] == 1){
+				point = [point[0],1,2];
+				return;
+			}
+			if(point[1] == 1 && point[2] == 0){
+				point = [point[0],0,1];
+				return;
+			}
+			if(point[1] == 1 && point[2] == 2){
+				point = [point[0],2,1];
+				return;
+			}
+			if(point[1] == 2 && point[2] == 1){
+				point = [point[0],1,0];
+				return;
+			}
+		},
+		l : function(k){
+			//转面 是否影响 已归位 白块 1影响
+			if(k == 1) return 0;
+			if(k == 2){
+				if(arr[3][1][0] <= 9) return 1;
+				else return 0;
+			}
+			if(k == 4){
+				if(arr[3][1][2] <= 9) return 1;
+				else return 0;
+			}
+			if(k == 5){
+				if(arr[3][0][1] <= 9) return 1;
+				else return 0;
+			}
+			if(k == 6){
+				if(arr[3][2][1] <= 9) return 1;
+				else return 0;
+			}
+			console.log('l_false'+k);
+		},
+		run : function(){
+			this.g();
+			console.log('is i');
+			this.i();
+		}
+	};
+}(window);
 ;!function(a){
 	"use strict";
 	var b = [0,0,0,0];
-	a.stepType3 = {
+	a.step3 = {
 		a : function(){
-			var foo = b;
-			var _this = this.stepType3;
-			foo.forEach(function(v,k){
-				if(v == 1) return;
-				k == 0 && _this.b(arr[5][1][1],arr[5][2][1]) && _this.d(k);
-				k == 1 && _this.b(arr[2][1][0],arr[2][1][1]) && _this.d(k);
-				k == 2 && _this.b(arr[6][0][1],arr[5][1][1]) && _this.d(k);
-				k == 3 && _this.b(arr[5][1][1],arr[5][2][1]) && _this.d(k);
-			})
-			return b;
+			//循环 没有转过的白色
+			for(var key in b){
+				if(b[key] == 1) continue;
+				if(key == 0){
+					if(this.b(arr[5][1][1],arr[5][2][1])) {
+						this.d(key);
+						continue;
+					}
+					else continue;
+				}
+				if(key == 1){
+					if(this.b(arr[2][1][0],arr[2][1][1])) {
+						this.d(key);
+						continue;
+					}
+					else continue;
+				}
+				if(key == 2){
+					if(this.b(arr[6][0][1],arr[6][1][1])) {
+						this.d(key);
+						continue;
+					}
+					else continue;
+				}
+				if(key == 3){
+					if(this.b(arr[4][1][1],arr[4][1][2])) {
+						this.d(key);
+						continue;
+					}
+					else continue;
+				}
+				console.log('step3_a_false');
+			}
 		},//检查并转 并改数组
 		b : function(a,b){
 			return Math.floor(a/9) == Math.floor(b/9) ? 1 : 0;
 		},
 		c : function(){
-			planeTurn(3);
+			
 		},
 		d : function(a){
+			//转 并改b
 			if(a == 0){
 				horizontalTurn(1);
 				horizontalTurn(1);
+				b[a] = 1;
+				return;
 			}
 			if(a == 1){
 				verticalTurn(3);
 				verticalTurn(3);
+				b[a] = 1;
+				return;
 			}
 			if(a == 2){
 				horizontalTurn(3);
 				horizontalTurn(3);
+				b[a] = 1;
+				return;
 			}
 			if(a == 3){
 				verticalTurn(1);
 				verticalTurn(1);
+				b[a] = 1;
+				return;
 			}
-			b[a] = 1;
+			console.log('step3_d_false'+a);
 		},
-		e : function(){
-			var a = 1;
-			for (var i = 0; i <= 3; i++) {
-				if(b[i] == 0) {
-					a = 0;
-					return a;
-				}
+		check : function(){
+			for (var i in b) {
+				if(!b[i]) return 0;
 			}
-			return a;
+			return 1;
+		},
+		f:function(){
+			if(this.check()){
+				return;
+			}else{
+				planeTurn(3);
+				var foo = b[3];
+				b[3] = b[2];
+				b[2] = b[1];
+				b[1] = b[0];
+				b[0] = foo;
+				this.a();
+				this.f();
+			}
+		},
+		run:function(){
+			allTurn(3);
+			allTurn(3);
+			this.a();
+			this.f();
+			allTurn(3);
 		}
 	};
 }(window);
+;!function(a){
+	"use strict";
+	var b = [0,0,0,0];
+	var point = [];
+	a.step4 = {
+		a : function(){
+			point[0] = 
 
-!function(a){
+
+			horizontalTurn(3);
+		}, 
+		b : function(k1,k2,k3){
+			var foo = [];
+			foo['4,2,0'] = '3,2,2';
+			foo['4,2,2'] = '1,2,0';
+			foo['1,2,0'] = '4,2,2';
+			foo['1,2,2'] = '2,2,0';
+			foo['2,2,0'] = '1,2,2';
+			foo['2,2,2'] = '3,2,0';
+			foo['3,2,0'] = '2,2,2';
+			foo['3,2,2'] = '4,2,0';
+			return foo[k1+','+k2+','+k3];
+		},
+		c : function(){
+			
+		},
+		find:function(){
+			for (var i = 0; i < 4; i++) {
+				if(arr[i+1][2][2] <= 9){
+					point = [i+1,2,2];
+					point = this.b(point[0],point[1],point[2]).split(',');
+					return;
+				}
+				if(arr[i+1][2][0] <= 9){
+					point = [i+1,2,0];
+					point = this.b(point[0],point[1],point[2]).split(',');
+					return;
+				}
+			}
+		},
+		check : function(){
+			
+		},
+		run:function(){
+		}
+	};
+}(window);
+/*;!function(a){
+	"use strict";
+	var b = [0,0,0,0];
+	a.step3 = {
+		a : function(){
+			 
+		}, 
+		b : function( ){
+			 
+		},
+		c : function(){
+			
+		},
+		check : function(){
+			
+		},
+		run:function(){
+		}
+	};
+}(window);*/
+/*!function(a){
+	var x = [1,2];
 	a.a = {
-		a:[0,1],
-		b:function(){
-			console.log(this);
-			var b = this.a;
-			b.forEach(function(){
-				console.log(this);
-			})
+		b : function(){
+			var y = x;
+			y[1] = '555';
 		}
 	}
 }(window)
-a.b();
+a.b();*/
+;
+! function(a) {
+	"use strict";
+	a.check = {
+		a: function() {
+			//检查中心点
+			if (this.g(arr[1][1][1], arr[3][1][1]) && this.g(arr[2][1][1], arr[4][1][1]) && this.g(arr[5][1][1], arr[6][1][1])) return 1;
+			else return 0;
+		},
+		b: function() {
+			//检查边点
+			//得到白边点
+			var array = this.i(),arrColor = [];
+			for(var key in array){
+				var point = this.h(array[key][0],array[key][1],array[key][2]);
+				var color = getColor(arr[point[0]][point[1]][point[2]]);
+				if(color == 'white') return 0;
+				arrColor.push(color);
+			}
+			return this.j(arrColor);
+
+		},
+		c: function(color) {
+			//对面 颜色
+			if (color == 'white') return 'yellow';
+			if (color == 'yellow') return 'white';
+			if (color == 'red') return 'orange';
+			if (color == 'orange') return 'red';
+			if (color == 'green') return 'blue';
+			if (color == 'blue') return 'green';
+			console.log('check_c_false' + color);
+		},
+		f: function(point) {
+			//console.log(point);
+			return this.c(getColor(point));
+		},
+		g: function(k1, k2) {
+			if (getColor(k1) == this.c(getColor(k2))) return 1;
+			else return 0;
+		},
+		h: function(v1, v2, v3) {
+			var array = [];
+			var key = v1 + ',' + v2 + ',' + v3;
+			array['1,0,1'] = [5, 2, 1];
+			array['1,1,0'] = [4, 1, 2];
+			array['1,1,2'] = [2, 1, 0];
+			array['1,2,1'] = [6, 0, 1];
+
+			array['3,0,1'] = [5, 0, 1];
+			array['3,1,0'] = [2, 1, 2];
+			array['3,1,2'] = [4, 1, 0];
+			array['3,2,1'] = [6, 2, 1];
+
+			array['4,0,1'] = [5, 1, 0];
+			array['4,2,1'] = [6, 1, 0];
+			array['2,0,1'] = [5, 1, 2];
+			array['2,2,1'] = [6, 1, 2];
+
+			if (array[key]) {
+				return array[key];
+			} else {
+				for (var key in array) {
+					if (array[key][0] == v1 && array[key][1] == v2 && array[key][2] == v3) {
+						return key.split(',');
+					}
+				}
+				console.log('check_h_false');
+			}
+		},
+		i: function() {
+			var array = [];
+			for (var a in arr) {
+				for (var b in arr[a]) {
+					for (var c in arr[a][b]) {
+						//屏蔽角点 和非白点
+						if (arr[a][b][c] > 9) continue;
+						/*if (v) {
+							if ((a == 1 || a == 2 || a == 4) && b != 1) continue;
+							if ((a == 5 || a == 6) && b == 1) continue;
+						} else {
+							if ((a == 1 || a == 2 || a == 4) && b == 1) continue;
+							if ((a == 5 || a == 6) && b != 1) continue;
+						}*/
+						if (b == 0 && c == 0) continue;
+						if (b == 0 && c == 2) continue;
+						if (b == 2 && c == 0) continue;
+						if (b == 2 && c == 2) continue;
+						if (b == 1 && c == 1) continue;
+						array.push([a, b, c]);
+					}
+				}
+			}
+			return array;
+		},
+		j: function(array) {
+			//检查数组 中有没有重复值
+			var array = array.sort();
+			for (var i = 0; i < array.length; i++) {
+				if (array[i] == array[i + 1]) {
+					return 0;
+				}
+				return 1;
+			}
+		},
+		run: function() {
+			if (this.a() && this.b()) return 1;
+			else return 0;
+		}
+	}
+}(window)
 $(function(){
 	_show();
 })
