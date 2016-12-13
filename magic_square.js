@@ -520,6 +520,8 @@
 				this.excute();
 				this.run3();
 			} else {
+				allTurn(3);
+				allTurn(3);
 				return;
 			}
 		},
@@ -530,7 +532,224 @@
 		}
 	};
 
+	a.step5 = {
+		turnNum : 0,
+		find:function(){
+			for (var i = 1; i <= 4; i++) {
+				if(i == 1) var color = getColor(arr[5][2][1]);
+				if(i == 2) var color = getColor(arr[5][1][2]);
+				if(i == 3) var color = getColor(arr[5][0][1]);
+				if(i == 4) var color = getColor(arr[5][1][0]);
+				if(color == 'yellow') continue;
+				if(getColor(arr[i][1][1]) == getColor(arr[i][0][1])){
+					return i;
+				}
+			}
+			return 0;
+		},
+		find1:function(){
+			var color = [], 
+				color1 = [];
+			color.push(getColor(arr[1][0][1]));
+			color.push(getColor(arr[2][0][1]));
+			color.push(getColor(arr[3][0][1]));
+			color.push(getColor(arr[4][0][1]));
 
+			color1.push(getColor(arr[5][2][1]));
+			color1.push(getColor(arr[5][1][2]));
+			color1.push(getColor(arr[5][0][1]));
+			color1.push(getColor(arr[5][1][0]));
+			for (var i = 1; i <= 4; i++) {
+				if(color[i-1] != 'yellow') continue;
+				if(getColor(arr[i][1][1]) == color1[i-1]){
+					return i;
+				}
+			}
+			return 0;
+		},
+		run1 : function(){
+			var isFound = this.find();
+			if(isFound){
+				if(isFound == 1){
+					this.excute();
+					this.run1();
+					return;
+				}
+				if(isFound == 2){
+					horizontalTurn(4);
+					horizontalTurn(5);
+					horizontalTurn(6);
+					this.excute();
+					this.run1();
+					return;
+				}
+				if(isFound == 3){
+					horizontalTurn(4);
+					horizontalTurn(5);
+					horizontalTurn(6);
+
+					horizontalTurn(4);
+					horizontalTurn(5);
+					horizontalTurn(6);
+					this.excute();
+					this.run1();
+					return;
+				}
+				if(isFound == 4){
+					horizontalTurn(1);
+					horizontalTurn(2);
+					horizontalTurn(3);
+					this.excute();
+					this.run1();
+					return;
+				} 
+				console.log('step5_a_false'+isFound);
+			}else{
+				if(this.turnNum >2) return;
+				horizontalTurn(1);
+				this.turnNum++;
+				this.run1();
+			}
+		}, 
+		run2:function(){
+			this.turnNum = 0;
+			var isFound = this.find1();
+			if(isFound){
+				if(isFound == 1){
+					this.excute();
+					return;
+				}
+				if(isFound == 2){
+					horizontalTurn(4);
+					horizontalTurn(5);
+					horizontalTurn(6);
+					this.excute();
+					return;
+				}
+				if(isFound == 3){
+					horizontalTurn(4);
+					horizontalTurn(5);
+					horizontalTurn(6);
+
+					horizontalTurn(4);
+					horizontalTurn(5);
+					horizontalTurn(6);
+					this.excute();
+					return;
+				}
+				if(isFound == 4){
+					horizontalTurn(1);
+					horizontalTurn(2);
+					horizontalTurn(3);
+					this.excute();
+					return;
+				} 
+			}else{
+				if(this.turnNum >2) return;
+				horizontalTurn(1);
+				this.turnNum++;
+				this.run2();
+			}
+		},
+		excute :function(v){
+			this.turnNum = 0;
+			var isLeft = getColor(arr[5][2][1]) == getColor(arr[4][1][1]) ? 1 : 0;
+			if (isLeft || v) {
+				horizontalTurn(1);
+				verticalTurn(4);
+				horizontalTurn(4);
+				verticalTurn(1);
+				horizontalTurn(4);
+				planeTurn(3);
+				horizontalTurn(1);
+				planeTurn(6);
+			} else {
+				horizontalTurn(4);
+				verticalTurn(6);
+				horizontalTurn(1);
+				verticalTurn(3);
+				horizontalTurn(1);
+				planeTurn(6);
+				horizontalTurn(4);
+				planeTurn(3);
+			}
+		},
+		check:function(){
+			if(getColor(arr[1][1][0]) == getColor(arr[1][1][2]) && getColor(arr[3][1][0]) == getColor(arr[3][1][2])){
+				return 1;
+			}else{
+				return 0;
+			}
+		},
+		run: function() {
+			this.run1();
+			if(!check) this.run2();
+		}
+	};
+
+	a.step6 = {
+		yellowShape : [],
+		excute:function(){
+			horizontalTurn(3);
+			verticalTurn(6);
+			planeTurn(3);
+			verticalTurn(3);
+			planeTurn(3);planeTurn(3);planeTurn(3);
+			horizontalTurn(6);
+		},
+		init:function(){
+			this.yellowShape.push(getColor(arr[5][0][1]) == 'yellow');
+			this.yellowShape.push(getColor(arr[5][1][0]) == 'yellow');
+			this.yellowShape.push(getColor(arr[5][1][2]) == 'yellow');
+			this.yellowShape.push(getColor(arr[5][2][1]) == 'yellow');
+			allTurn(3);
+		},
+		check:function(){
+			for (var i = 0; i < this.yellowShape.length; i++) {
+				if(!this.yellowShape[i]) return 0; 
+			}
+			return 1;
+		},
+		run:function(){
+			this.init();
+			if(this.check()) return;
+			if(this.yellowShape[0] && this.yellowShape[3]){
+				planeTurn(3);
+				this.excute();
+				return;
+			}
+			if(this.yellowShape[1] && this.yellowShape[2]){
+				this.excute();
+				return;
+			}
+			if(this.yellowShape[0] && this.yellowShape[1]){
+				this.excute();
+				this.excute();
+				return;
+			}
+			if(this.yellowShape[0] && this.yellowShape[2]){
+				planeTurn(3);
+				planeTurn(3);
+				planeTurn(3);
+				this.excute();
+				this.excute();
+				return;
+			}
+			if(this.yellowShape[3] && this.yellowShape[1]){
+				planeTurn(3);
+				this.excute();
+				this.excute();
+				return;
+			}
+			if(this.yellowShape[3] && this.yellowShape[2]){
+				planeTurn(3);
+				planeTurn(3);
+				this.excute();
+				this.excute();
+				return;
+			}
+		}
+	}
 
 	a.check = {
 		a: function() {
