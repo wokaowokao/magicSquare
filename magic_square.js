@@ -1,3 +1,6 @@
+step
+dfdfefre
+
 ;
 ! function(a) {
 	"use strict";
@@ -37,7 +40,7 @@
 			this.excute();
 		}
 	};
-
+sdsa
 	a.step2 = {
 		point : [],
 		find: function(v) {
@@ -859,7 +862,6 @@
 	}
 }(window);
 
- 
 /*;!function(a){
 	"use strict";
 	var b = [0,0,0,0];
@@ -893,3 +895,7 @@ a.b();*/
 $(function(){
 	_show();
 })
+dfdf
+dfdssddasa
+dsfs
+sds
