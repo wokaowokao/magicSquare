@@ -1,6 +1,3 @@
-step
-dfdfefre
-
 ;
 ! function(a) {
 	"use strict";
@@ -40,7 +37,6 @@ dfdfefre
 			this.excute();
 		}
 	};
-sdsa
 	a.step2 = {
 		point : [],
 		find: function(v) {
@@ -538,120 +534,92 @@ sdsa
 	a.step5 = {
 		turnNum : 0,
 		find:function(){
-			for (var i = 1; i <= 4; i++) {
-				if(i == 1) var color = getColor(arr[5][2][1]);
-				if(i == 2) var color = getColor(arr[5][1][2]);
-				if(i == 3) var color = getColor(arr[5][0][1]);
-				if(i == 4) var color = getColor(arr[5][1][0]);
-				if(color == 'yellow') continue;
-				if(getColor(arr[i][1][1]) == getColor(arr[i][0][1])){
-					return i;
-				}
-			}
+			if(getColor(arr[5][2][1]) != 'yellow' && getColor(arr[1][0][1]) != 'yellow')
+			return 1;
+			if(getColor(arr[5][1][2]) != 'yellow' && getColor(arr[2][0][1]) != 'yellow')
+			return 2;
+			if(getColor(arr[5][0][1]) != 'yellow' && getColor(arr[3][0][1]) != 'yellow')
+			return 3;
+			if(getColor(arr[5][1][0]) != 'yellow' && getColor(arr[4][0][1]) != 'yellow')
+			return 4;
 			return 0;
 		},
 		find1:function(){
-			var color = [], 
-				color1 = [];
-			color.push(getColor(arr[1][0][1]));
-			color.push(getColor(arr[2][0][1]));
-			color.push(getColor(arr[3][0][1]));
-			color.push(getColor(arr[4][0][1]));
-
-			color1.push(getColor(arr[5][2][1]));
-			color1.push(getColor(arr[5][1][2]));
-			color1.push(getColor(arr[5][0][1]));
-			color1.push(getColor(arr[5][1][0]));
-			for (var i = 1; i <= 4; i++) {
-				if(color[i-1] != 'yellow') continue;
-				if(getColor(arr[i][1][1]) == color1[i-1]){
-					return i;
-				}
-			}
+			if(getColor(arr[1][1][2]) != 'yellow' && getColor(arr[2][1][0]) != 'yellow' && getColor(arr[1][1][2]) != getColor(arr[1][1][1]))
+			return 1;
+			if(getColor(arr[2][1][2]) != 'yellow' && getColor(arr[3][1][0]) != 'yellow' && getColor(arr[2][1][2]) != getColor(arr[2][1][1]))
+			return 2;
+			if(getColor(arr[3][1][2]) != 'yellow' && getColor(arr[4][1][0]) != 'yellow' && getColor(arr[2][1][2]) != getColor(arr[2][1][1]))
+			return 3;
+			if(getColor(arr[4][1][2]) != 'yellow' && getColor(arr[1][1][0]) != 'yellow' && getColor(arr[3][1][2]) != getColor(arr[3][1][1]))
+			return 4;
 			return 0;
 		},
-		run1 : function(){
-			var isFound = this.find();
-			if(isFound){
-				if(isFound == 1){
+		run1 : function(v){
+			var isFound = v ? v : this.find();
+			console.log(isFound);
+			switch (+isFound) {
+				case 1:
+					this.a(isFound);
 					this.excute();
-					this.run1();
+					v ? '' : this.run1();
 					return;
-				}
-				if(isFound == 2){
+				case 2:
+					this.a(isFound);
 					horizontalTurn(4);
-					horizontalTurn(5);
-					horizontalTurn(6);
 					this.excute();
-					this.run1();
+					v ? '' : this.run1();
 					return;
-				}
-				if(isFound == 3){
+				case 3:
+					this.a(isFound);
 					horizontalTurn(4);
-					horizontalTurn(5);
-					horizontalTurn(6);
-
 					horizontalTurn(4);
-					horizontalTurn(5);
-					horizontalTurn(6);
 					this.excute();
-					this.run1();
+					v ? '' : this.run1();
 					return;
-				}
-				if(isFound == 4){
+				case 4:
+					this.a(isFound);
 					horizontalTurn(1);
-					horizontalTurn(2);
-					horizontalTurn(3);
 					this.excute();
-					this.run1();
+					v ? '' : this.run1();
 					return;
-				} 
-				console.log('step5_a_false'+isFound);
-			}else{
-				if(this.turnNum >2) return;
-				horizontalTurn(1);
-				this.turnNum++;
-				this.run1();
+				default:
+					console.log('step5_run1_over');
 			}
 		}, 
+		a:function(index){
+			var color = getColor(arr[index][0][1]);
+			if(getColor(arr[1][1][1]) == color){
+				return;
+			}
+			if(getColor(arr[2][1][1]) == color){
+				this.b(1);
+			}
+			if(getColor(arr[3][1][1]) == color){
+				this.b(2);
+			}
+			if(getColor(arr[4][1][1]) == color){
+				this.b(3);
+			}
+		},
+		b:function(num){
+			for (var i = 0; i < num; i++) {
+				horizontalTurn(5);
+				horizontalTurn(6);
+			}
+		},
 		run2:function(){
-			this.turnNum = 0;
 			var isFound = this.find1();
-			if(isFound){
-				if(isFound == 1){
-					this.excute();
-					return;
-				}
-				if(isFound == 2){
-					horizontalTurn(4);
-					horizontalTurn(5);
-					horizontalTurn(6);
-					this.excute();
-					return;
-				}
-				if(isFound == 3){
-					horizontalTurn(4);
-					horizontalTurn(5);
-					horizontalTurn(6);
-
-					horizontalTurn(4);
-					horizontalTurn(5);
-					horizontalTurn(6);
-					this.excute();
-					return;
-				}
-				if(isFound == 4){
-					horizontalTurn(1);
-					horizontalTurn(2);
-					horizontalTurn(3);
-					this.excute();
-					return;
-				} 
-			}else{
-				if(this.turnNum >2) return;
-				horizontalTurn(1);
-				this.turnNum++;
-				this.run2();
+			console.log(isFound);
+			isFound && this.c(isFound-1) && this.run1(4) && this.run2();
+			console.log('step5_run2_over');
+ 			
+		},
+		c:function(num){
+			for (var i = 0; i < num; i++) {
+				horizontalTurn(4);
+				horizontalTurn(5);
+				horizontalTurn(6);
 			}
 		},
 		excute :function(v){
@@ -686,7 +654,7 @@ sdsa
 		},
 		run: function() {
 			this.run1();
-			if(!check) this.run2();
+			if(!this.check()) this.run2();
 		}
 	};
 
@@ -894,8 +862,6 @@ sdsa
 a.b();*/
 $(function(){
 	_show();
+	excute(["25", "35", "24", "36", "22", "24", "13", "22", "22", "31", "31", "14", "22", "21", "36", "35", "36", "15", "26", "25"]);
 })
-dfdf
-dfdssddasa
-dsfs
-sds
+//第5步  excute(["25", "35", "24", "36", "22", "24", "13", "22", "22", "31", "31", "14", "22", "21", "36", "35", "36", "15", "26", "25"]);
