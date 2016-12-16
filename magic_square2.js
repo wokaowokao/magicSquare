@@ -232,6 +232,7 @@ function excute(array) {
 }
 //打乱
 function upset() {
+	allStep = [];
 	for (var i = 0; i < 20; i++) {
 		var val = Math.round(Math.random() * 2) + 1;
 		var num = Math.round(Math.random() * 5 + 1);

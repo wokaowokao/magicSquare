@@ -611,9 +611,13 @@
 		run2:function(){
 			var isFound = this.find1();
 			console.log(isFound);
-			isFound && this.c(isFound-1) && this.run1(4) && this.run2();
-			console.log('step5_run2_over');
- 			
+			if(isFound){
+				this.c(isFound-1);
+				this.excute();
+				this.run2();
+			}else{
+				console.log('step5_run2_over');
+			}			
 		},
 		c:function(num){
 			for (var i = 0; i < num; i++) {
@@ -626,6 +630,10 @@
 			this.turnNum = 0;
 			var isLeft = getColor(arr[5][2][1]) == getColor(arr[4][1][1]) ? 1 : 0;
 			if (isLeft || v) {
+				var foo = 0;
+				if(getColor(arr[1][1][0]) != 'yellow' && getColor(arr[4][1][2]) != 'yellow'){
+					foo = 1;
+				}
 				horizontalTurn(1);
 				verticalTurn(4);
 				horizontalTurn(4);
@@ -634,7 +642,12 @@
 				planeTurn(3);
 				horizontalTurn(1);
 				planeTurn(6);
+
 			} else {
+				var foo = 0;
+				if(getColor(arr[1][1][2]) != 'yellow' && getColor(arr[2][1][0]) != 'yellow'){
+					foo = 1;
+				}
 				horizontalTurn(4);
 				verticalTurn(6);
 				horizontalTurn(1);
@@ -643,6 +656,9 @@
 				planeTurn(6);
 				horizontalTurn(4);
 				planeTurn(3);
+			}
+			if(foo){
+				this.run1(3);
 			}
 		},
 		check:function(){
@@ -669,11 +685,11 @@
 			horizontalTurn(6);
 		},
 		init:function(){
-			this.yellowShape.push(getColor(arr[5][0][1]) == 'yellow');
-			this.yellowShape.push(getColor(arr[5][1][0]) == 'yellow');
-			this.yellowShape.push(getColor(arr[5][1][2]) == 'yellow');
-			this.yellowShape.push(getColor(arr[5][2][1]) == 'yellow');
-			allTurn(3);
+			this.yellowShape = [];
+			this.yellowShape.push(getColor(arr[1][0][1]) == 'yellow');
+			this.yellowShape.push(getColor(arr[1][1][0]) == 'yellow');
+			this.yellowShape.push(getColor(arr[1][1][2]) == 'yellow');
+			this.yellowShape.push(getColor(arr[1][2][1]) == 'yellow');
 		},
 		check:function(){
 			for (var i = 0; i < this.yellowShape.length; i++) {
@@ -681,7 +697,8 @@
 			}
 			return 1;
 		},
-		run:function(){
+		run:function(v){
+			v?'':allTurn(3);
 			this.init();
 			if(this.check()) return;
 			if(this.yellowShape[0] && this.yellowShape[3]){
@@ -719,6 +736,8 @@
 				this.excute();
 				return;
 			}
+			this.excute();
+			this.run(1);
 		}
 	}
 
@@ -862,6 +881,6 @@
 a.b();*/
 $(function(){
 	_show();
-	excute(["25", "35", "24", "36", "22", "24", "13", "22", "22", "31", "31", "14", "22", "21", "36", "35", "36", "15", "26", "25"]);
+	excute(["21", "22", "13", "22", "35", "12", "26", "24", "13", "25", "24", "33", "24", "35", "24", "13", "31", "13", "14", "12"]);
 })
 //第5步  excute(["25", "35", "24", "36", "22", "24", "13", "22", "22", "31", "31", "14", "22", "21", "36", "35", "36", "15", "26", "25"]);
