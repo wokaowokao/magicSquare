@@ -978,7 +978,7 @@
 	}
 	a.step8 = {
 		sameNum : 0,
-		excute: function(v) {
+		excute: function() {
 			verticalTurn(3);
 			verticalTurn(3);
 			horizontalTurn(3);
@@ -991,30 +991,30 @@
 			verticalTurn(3);
 			horizontalTurn(4);
 			verticalTurn(3);
-			if(!v){
-				var array = [];
+		},
+		_excute:function(){
+			var array = [];
 				array.push(getColor(arr[2][1][1]));
+				array.push(getColor(arr[6][1][1]));
 				array.push(getColor(arr[4][1][1]));
 				array.push(getColor(arr[5][1][1]));
-				array.push(getColor(arr[6][1][1]));
-				if(getColor(arr[2][0][0]) == getColor(arr[2][1][0]) && == getColor(arr[2][0][0]) == getColor(arr[2][2][0])){
+				
+				if(getColor(arr[2][0][0]) == getColor(arr[2][1][0]) &&   getColor(arr[2][0][0]) == getColor(arr[2][2][0])){
 					this.a(array,getColor(arr[2][0][0]),0);
 					return;
 				}
-				if(getColor(arr[4][0][2]) == getColor(arr[4][1][2]) && == getColor(arr[4][0][2]) == getColor(arr[4][2][2])){
-					this.a(array,getColor(arr[4][0][2]),1);
+				if(getColor(arr[6][0][0]) == getColor(arr[6][0][1]) &&   getColor(arr[6][0][0]) == getColor(arr[6][0][2])){
+					this.a(array,getColor(arr[6][0][0]),1);
 					return;
 				}
-				if(getColor(arr[5][2][0]) == getColor(arr[5][2][1]) && == getColor(arr[5][2][0]) == getColor(arr[5][2][2])){
-					this.a(array,getColor(arr[5][2][0]),2);
+				if(getColor(arr[4][0][2]) == getColor(arr[4][1][2]) &&   getColor(arr[4][0][2]) == getColor(arr[4][2][2])){
+					this.a(array,getColor(arr[4][0][2]),2);
 					return;
 				}
-				if(getColor(arr[6][0][0]) == getColor(arr[6][0][1]) && == getColor(arr[6][0][0]) == getColor(arr[6][0][2])){
-					this.a(array,getColor(arr[6][0][0]),3);
+				if(getColor(arr[5][2][0]) == getColor(arr[5][2][1]) &&   getColor(arr[5][2][0]) == getColor(arr[5][2][2])){
+					this.a(array,getColor(arr[5][2][0]),3);
 					return;
 				}
-				
-			}
 		},
 		a:function(array,color,b){
 			for (var i in array) {
@@ -1023,91 +1023,141 @@
 				}
 			}
 			var foo = b - i;
-			if(!foo) return;
-			if(foo >0){
-				for (var i = 0; i < foo; i++) {
-					planeTurn(3);
-				}
-			}else{
-				for (var i = 0; i > foo; i--) {
-					planeTurn(6);
+			if (foo) {
+				if (foo > 0) {
+					for (var j = 0; j < foo; j++) {
+						planeTurn(3);
+					}
+				} else {
+					for (var j = 0; j > foo; j--) {
+						planeTurn(6);
+					}
 				}
 			}
+			for (var jj = 0; jj < 3-i; jj++) {
+				planeTurn(1);
+				planeTurn(2);
+				planeTurn(3);
+			}
 		},
-		run:function(){
+		init:function(){
+			this.sameNum = 0;
 			if (getColor(arr[5][2][0]) == getColor(arr[5][2][2])) this.sameNum += 1;
 			if (getColor(arr[2][0][0]) == getColor(arr[2][2][0])) this.sameNum += 2;
 			if (getColor(arr[6][0][0]) == getColor(arr[6][0][2])) this.sameNum += 3;
 			if (getColor(arr[4][0][2]) == getColor(arr[4][2][2])) this.sameNum += 4;
+		},
+		b:function(){
+			step7.c();
+			planeTurn(3);
+			planeTurn(3);
+			step7.c(1);
+		},
+		run:function(){
+			this.init();
 			if(this.sameNum == 0){
-				this.excute(1);
+				this.excute();
 				this.run();
 				return;
 			}
 			if(this.sameNum == 1){
 				planeTurn(3);
 				this.excute();
+				this.init();
+				if(this.sameNum == 10) this.b();
+				this._excute();
 				return;
 			}
 			if(this.sameNum == 3){
 				planeTurn(6);
 				this.excute();
+				this.init();
+				if(this.sameNum == 10) this.b();
+				this._excute();
 				return;
 			}
 			if(this.sameNum == 4){
 				planeTurn(3);
 				planeTurn(3);
 				this.excute();
+				this.init();
+				if(this.sameNum == 10) this.b();
+				this._excute();
 				return;
 			}
-			if(this.sameNum == 8){
+			if(this.sameNum == 10){
+				this.b();
+				this._excute();
 				return;
 			}
 		}
 	}
 	a.step9 = {
-		excute: function() {
-			if(v){
+		excute: function(v) {
+			if (v) {
 				verticalTurn(6);
-				horizontalTurn(1);
+				planeTurn(6);
 				verticalTurn(6);
-				horizontalTurn(4);
+				planeTurn(3);
 				verticalTurn(6);
 
-				horizontalTurn(4);
+				planeTurn(3);
 				verticalTurn(6);
-				horizontalTurn(1);
+				planeTurn(6);
 				verticalTurn(3);
-				horizontalTurn(1);
+				planeTurn(6);
 
 				verticalTurn(3);
 				verticalTurn(3);
 
-			}else{
-			verticalTurn(4);
-			horizontalTurn(4);
-			verticalTurn(4);
-			horizontalTurn(1);
-			verticalTurn(4); 
+			} else {
+				//左手情况
+				verticalTurn(4);
+				planeTurn(3);
+				verticalTurn(4);
+				planeTurn(6);
+				verticalTurn(4);
 
-			horizontalTurn(1);
-			verticalTurn(4);
+				planeTurn(6);
+				verticalTurn(4);
+				planeTurn(3);
+				verticalTurn(1);
+				planeTurn(3);
 
-
-			horizontalTurn(4);
-			verticalTurn(1);
-			horizontalTurn(4);
-			verticalTurn(1);
-			verticalTurn(1);
+				verticalTurn(1);
+				verticalTurn(1);
 			}
 
 
-/*planeTurn(1);
-planeTurn(2);
-planeTurn(3);*/
+			/*planeTurn(1);
+			planeTurn(2);
+			planeTurn(3);*/
 		},
-		run:function(){
-			 
+		run: function() {
+			if (this.a(getColor(arr[2][1][0]), getColor(arr[4][1][1]))) {
+				this.excute(1);
+			} else {
+				this.excute();
+			}
+		},
+		a: function(a, b) {
+			switch ('' + a) {
+				case 'blue':
+					if (b == 'green') return 1;
+					break;
+				case 'orange':
+					if (b == 'red') return 1;
+					break;
+				case 'green':
+					if (b == 'blue') return 1;
+					break;
+				case 'red':
+					if (b == 'orange') return 1;
+					break;
+				default:
+					return 0;
+			}
+			return 0;
 		}
 	}
 	a.check = {
@@ -1250,7 +1300,7 @@ planeTurn(3);*/
 a.b();*/
 $(function(){
 	_show();
-	excute(["21", "34", "23", "25", "15", "14", "25", "35", "31", "14", "22", "35", "13", "25", "25", "24", "23", "23", "13", "14"]);
+	//excute(["26", "26", "12", "21", "34", "23", "14", "25", "34", "15", "24", "25", "15", "22", "12", "14", "25", "22", "25", "22"]);
 	//["24", "22", "13", "33", "31", "26", "22", "34", "12", "24", "22", "24", "31", "25", "22", "12", "23", "12", "32", "22"]
 	//["25", "14", "12", "22", "24", "12", "14", "34", "15", "25", "13", "22", "15", "36", "14", "13", "11", "22", "35", "25"]
 	//["14", "16", "33", "22", "35", "34", "22", "31", "22", "15", "35", "25", "35", "35", "36", "16", "35", "24", "25", "25"]
